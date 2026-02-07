@@ -1,0 +1,140 @@
+<?php
+/**
+ * Main Frontend Layout
+ */
+$theme = $_COOKIE['theme'] ?? 'light';
+$langName = ($langNames[$lang] ?? 'کوردی');
+$siteName = $settings->{'site_name_' . $lang} ?? 'LVINPress';
+$categories = $categories ?? [];
+?>
+<!DOCTYPE html>
+<html lang="<?= $lang ?>" dir="<?= $dir ?>" data-theme="<?= $theme ?>">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#1a1a2e">
+    <?= generate_meta_tags($meta ?? []) ?>
+    
+    <!-- Alternate languages -->
+    <link rel="alternate" hreflang="ku" href="<?= url('ku') ?>">
+    <link rel="alternate" hreflang="en" href="<?= url('en') ?>">
+    <link rel="alternate" hreflang="ar" href="<?= url('ar') ?>">
+    
+    <!-- RSS -->
+    <link rel="alternate" type="application/rss+xml" title="<?= $siteName ?> RSS" href="<?= url("feed/{$lang}/rss") ?>">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600;700;800&family=Noto+Naskh+Arabic:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <!-- Styles -->
+    <link rel="stylesheet" href="<?= asset('css/style.css') ?>">
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="<?= url('manifest.json') ?>">
+    
+    <?= $settings->header_scripts ?? '' ?>
+</head>
+<body>
+    <!-- Breaking News Ticker -->
+    <?php if (!empty($breakingNews)): ?>
+    <div class="news-ticker" id="newsTicker">
+        <div class="news-ticker__label">
+            <i class="fas fa-bolt"></i>&nbsp;
+            <?= $t('breaking_news') ?>
+        </div>
+        <div class="news-ticker__content">
+            <div class="news-ticker__track">
+                <?php foreach ($breakingNews as $bn): ?>
+                    <?php $bnText = $bn->{'text_' . $lang} ?? $bn->text_ku; ?>
+                    <a href="<?= $bn->link ?: '#' ?>" class="news-ticker__item"><?= $bnText ?></a>
+                <?php endforeach; ?>
+                <?php foreach ($breakingNews as $bn): ?>
+                    <?php $bnText = $bn->{'text_' . $lang} ?? $bn->text_ku; ?>
+                    <a href="<?= $bn->link ?: '#' ?>" class="news-ticker__item"><?= $bnText ?></a>
+                <?php endforeach; ?>
+            </div>
+        </div>
+    </div>
+    <?php endif; ?>
+
+    <!-- Header -->
+    <header class="header" id="header">
+        <div class="container">
+            <div class="header__top">
+                <a href="<?= lang_url() ?>" class="header__logo">
+                    <div>
+                        <div class="header__logo-text">LVINPRESS</div>
+                        <div class="header__logo-tagline"><?= $settings->{'site_description_' . $lang} ?? 'Premium News' ?></div>
+                    </div>
+                </a>
+                
+                <div class="header__actions">
+                    <!-- Language Switcher -->
+                    <div class="lang-switcher">
+                        <a href="<?= url('ku') ?>" class="lang-switcher__btn <?= $lang === 'ku' ? 'active' : '' ?>" title="کوردی">کو</a>
+                        <a href="<?= url('en') ?>" class="lang-switcher__btn <?= $lang === 'en' ? 'active' : '' ?>" title="English">EN</a>
+                        <a href="<?= url('ar') ?>" class="lang-switcher__btn <?= $lang === 'ar' ? 'active' : '' ?>" title="العربية">عر</a>
+                    </div>
+                    
+                    <!-- Search -->
+                    <button class="search-toggle" id="searchToggle" aria-label="<?= $t('search') ?>">
+                        <i class="fas fa-search"></i>
+                    </button>
+                    
+                    <!-- Theme Toggle -->
+                    <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+                        <i class="fas fa-moon" id="themeIcon"></i>
+                    </button>
+                    
+                    <!-- Auth -->
+                    <?php if ($currentUser): ?>
+                        <?php if (in_array($currentUser->role, ['admin', 'editor'])): ?>
+                            <a href="<?= url('admin') ?>" class="btn btn-outline btn-sm"><?= $t('admin_panel') ?></a>
+                        <?php endif; ?>
+                        <a href="<?= url('logout') ?>" class="btn btn-outline btn-sm"><?= $t('logout') ?></a>
+                    <?php else: ?>
+                        <a href="<?= url('login') ?>" class="btn btn-gold btn-sm"><?= $t('login') ?></a>
+                    <?php endif; ?>
+                    
+                    <!-- Mobile Menu -->
+                    <button class="mobile-menu-btn" id="mobileMenuToggle" aria-label="Menu">
+                        <span></span><span></span><span></span>
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Navigation -->
+            <nav class="nav" id="mainNav">
+                <a href="<?= lang_url() ?>" class="nav__item <?= ($_SERVER['REQUEST_URI'] === '/' . $lang || $_SERVER['REQUEST_URI'] === '/' . $lang . '/') ? 'active' : '' ?>">
+                    <?= $t('home') ?>
+                </a>
+                <?php
+                $catModel = new \App\Models\Category();
+                $menuCats = $catModel->getMenu($lang);
+                foreach ($menuCats as $cat):
+                    $catName = $cat->{'name_' . $lang} ?? $cat->name_en;
+                ?>
+                <a href="<?= lang_url('category/' . $cat->slug_en) ?>" class="nav__item"><?= $catName ?></a>
+                <?php endforeach; ?>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Search Overlay -->
+    <div class="search-overlay" id="searchOverlay">
+        <button class="search-overlay__close" id="searchClose">&times;</button>
+        <div class="search-overlay__inner">
+            <form action="<?= lang_url('search') ?>" method="GET">
+                <input type="text" name="q" id="searchInput" class="search-overlay__input" placeholder="<?= $t('search_placeholder') ?>" autofocus>
+                <div id="searchSuggestions"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <main>

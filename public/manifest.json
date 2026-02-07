@@ -1,0 +1,24 @@
+{
+    "name": "LVINPress - لڤین پرێس",
+    "short_name": "LVINPress",
+    "description": "Premium Kurdish & Multilingual News Platform",
+    "start_url": "/vinnew/ku",
+    "display": "standalone",
+    "background_color": "#1a1a2e",
+    "theme_color": "#d4af37",
+    "lang": "ku",
+    "dir": "rtl",
+    "categories": ["news", "media"],
+    "icons": [
+        {
+            "src": "/vinnew/public/assets/images/icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        },
+        {
+            "src": "/vinnew/public/assets/images/icon-512.png",
+            "sizes": "512x512",
+            "type": "image/png"
+        }
+    ]
+}
