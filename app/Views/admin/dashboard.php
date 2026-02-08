@@ -1,158 +1,174 @@
 <?php
 /**
- * Admin Dashboard
+ * Admin Dashboard - Tailwind CSS Redesign
  */
 $pageTitle = $t('dashboard');
 ob_start();
 ?>
 
 <!-- Stats Cards -->
-<div class="admin-stats">
-    <div class="stat-card">
-        <div class="stat-card__icon" style="background:#d4af3720;color:#d4af37;">
-            <i class="fas fa-newspaper"></i>
-        </div>
-        <div>
-            <div class="stat-card__value"><?= number_format($stats['articles'] ?? 0) ?></div>
-            <div class="stat-card__label"><?= $t('articles') ?></div>
-        </div>
-    </div>
-    <div class="stat-card">
-        <div class="stat-card__icon" style="background:#3498db20;color:#3498db;">
-            <i class="fas fa-eye"></i>
-        </div>
-        <div>
-            <div class="stat-card__value"><?= number_format($stats['total_views'] ?? 0) ?></div>
-            <div class="stat-card__label"><?= $t('total_views') ?></div>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center">
+                <i class="fas fa-newspaper text-brand-gold"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($stats['articles'] ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('articles') ?></div>
+            </div>
         </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-card__icon" style="background:#2ecc7120;color:#2ecc71;">
-            <i class="fas fa-users"></i>
-        </div>
-        <div>
-            <div class="stat-card__value"><?= number_format($stats['users'] ?? 0) ?></div>
-            <div class="stat-card__label"><?= $t('users') ?></div>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <i class="fas fa-eye text-blue-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($stats['total_views'] ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('total_views') ?></div>
+            </div>
         </div>
     </div>
-    <div class="stat-card">
-        <div class="stat-card__icon" style="background:#e74c3c20;color:#e74c3c;">
-            <i class="fas fa-comments"></i>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <i class="fas fa-users text-emerald-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($stats['users'] ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('users') ?></div>
+            </div>
         </div>
-        <div>
-            <div class="stat-card__value"><?= number_format($stats['comments'] ?? 0) ?></div>
-            <div class="stat-card__label"><?= $t('comments') ?></div>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                <i class="fas fa-comments text-red-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($stats['comments'] ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('comments') ?></div>
+            </div>
         </div>
     </div>
 </div>
 
-<div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;margin-top:1.5rem;">
+<!-- Recent Articles & Comments -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
     <!-- Recent Articles -->
-    <div class="admin-card">
-        <div class="admin-card__header">
-            <h3><?= $t('recent_articles') ?></h3>
-            <a href="<?= url('admin/articles/create') ?>" class="btn btn-gold btn-sm">
+    <div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $t('recent_articles') ?></h3>
+            <a href="<?= url('admin/articles/create') ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 bg-brand-gold text-white text-xs font-medium rounded-lg hover:bg-brand-gold-dark transition">
                 <i class="fas fa-plus"></i> <?= $t('add_new') ?>
             </a>
         </div>
-        <div class="admin-card__body">
+        <div class="overflow-x-auto">
             <?php if (!empty($recentArticles)): ?>
-            <table class="admin-table">
+            <table class="w-full text-sm">
                 <thead>
-                    <tr>
-                        <th><?= $t('title') ?></th>
-                        <th><?= $t('status') ?></th>
-                        <th><?= $t('views') ?></th>
-                        <th><?= $t('date') ?></th>
+                    <tr class="border-b border-stone-100">
+                        <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('title') ?></th>
+                        <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('status') ?></th>
+                        <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('views') ?></th>
+                        <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('date') ?></th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="divide-y divide-stone-50">
                     <?php foreach ($recentArticles as $article): ?>
-                    <tr>
-                        <td>
-                            <a href="<?= url('admin/articles/edit/' . $article->id) ?>" class="text-primary">
+                    <tr class="hover:bg-stone-50/50 transition">
+                        <td class="px-5 py-3">
+                            <a href="<?= url('admin/articles/edit/' . $article->id) ?>" class="font-medium text-stone-700 hover:text-brand-gold transition">
                                 <?= excerpt($article->{'title_' . $lang} ?? $article->title_ku, 40) ?>
                             </a>
                         </td>
-                        <td>
-                            <span class="badge badge-<?= $article->status === 'published' ? 'success' : ($article->status === 'draft' ? 'warning' : 'info') ?>">
-                                <?= $t($article->status) ?>
-                            </span>
+                        <td class="px-5 py-3">
+                            <?php
+                            $statusColors = match($article->status) {
+                                'published' => 'bg-emerald-50 text-emerald-700',
+                                'draft' => 'bg-amber-50 text-amber-700',
+                                default => 'bg-blue-50 text-blue-700'
+                            };
+                            ?>
+                            <span class="inline-flex px-2 py-0.5 rounded-md text-xs font-medium <?= $statusColors ?>"><?= $t($article->status) ?></span>
                         </td>
-                        <td><?= number_format($article->views ?? 0) ?></td>
-                        <td class="text-sm text-muted"><?= date('Y-m-d', strtotime($article->created_at)) ?></td>
+                        <td class="px-5 py-3 text-stone-500"><?= number_format($article->views ?? 0) ?></td>
+                        <td class="px-5 py-3 text-stone-400 text-xs"><?= date('Y-m-d', strtotime($article->created_at)) ?></td>
                     </tr>
                     <?php endforeach; ?>
                 </tbody>
             </table>
             <?php else: ?>
-            <p class="text-muted"><?= $t('no_articles') ?></p>
+            <p class="text-stone-400 text-center py-8"><?= $t('no_articles') ?></p>
             <?php endif; ?>
         </div>
     </div>
-    
+
     <!-- Recent Comments -->
-    <div class="admin-card">
-        <div class="admin-card__header">
-            <h3><?= $t('recent_comments') ?></h3>
-            <a href="<?= url('admin/comments') ?>" class="btn btn-outline btn-sm"><?= $t('view_all') ?></a>
+    <div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $t('recent_comments') ?></h3>
+            <a href="<?= url('admin/comments') ?>" class="text-xs font-medium text-brand-gold hover:text-brand-gold-dark transition"><?= $t('view_all') ?></a>
         </div>
-        <div class="admin-card__body">
+        <div class="divide-y divide-stone-50">
             <?php if (!empty($recentComments)): ?>
                 <?php foreach ($recentComments as $comment): ?>
-                <div style="padding:0.75rem 0;border-bottom:1px solid var(--border-color);">
-                    <div style="display:flex;justify-content:space-between;align-items:start;">
-                        <div>
-                            <strong class="text-sm"><?= $comment->author_name ?? $comment->user_name ?? 'Anonymous' ?></strong>
-                            <span class="badge badge-<?= $comment->status === 'approved' ? 'success' : 'warning' ?>" style="margin-left:0.5rem;">
-                                <?= $t($comment->status) ?>
-                            </span>
+                <div class="px-5 py-4">
+                    <div class="flex items-start justify-between gap-3">
+                        <div class="flex items-center gap-2">
+                            <strong class="text-sm text-stone-700"><?= $comment->author_name ?? $comment->user_name ?? 'Anonymous' ?></strong>
+                            <?php
+                            $cStatusColor = $comment->status === 'approved' ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700';
+                            ?>
+                            <span class="inline-flex px-2 py-0.5 rounded-md text-[0.65rem] font-medium <?= $cStatusColor ?>"><?= $t($comment->status) ?></span>
                         </div>
-                        <span class="text-xs text-muted"><?= time_ago($comment->created_at) ?></span>
+                        <span class="text-[0.65rem] text-stone-400 shrink-0"><?= time_ago($comment->created_at) ?></span>
                     </div>
-                    <p class="text-sm text-muted" style="margin-top:0.25rem;"><?= excerpt($comment->content, 100) ?></p>
+                    <p class="text-sm text-stone-500 mt-1.5 line-clamp-2"><?= excerpt($comment->content, 100) ?></p>
                     <?php if ($comment->status === 'pending'): ?>
-                    <div style="display:flex;gap:0.5rem;margin-top:0.5rem;">
-                        <a href="<?= url('admin/comments/approve/' . $comment->id) ?>" class="btn btn-sm" style="background:#2ecc71;color:#fff;font-size:0.75rem;">
-                            <i class="fas fa-check"></i>
+                    <div class="flex items-center gap-2 mt-2.5">
+                        <a href="<?= url('admin/comments/approve/' . $comment->id) ?>" class="inline-flex items-center gap-1 px-2.5 py-1 bg-emerald-500 text-white text-xs font-medium rounded-md hover:bg-emerald-600 transition">
+                            <i class="fas fa-check text-[0.6rem]"></i> <?= $t('approve') ?? 'Approve' ?>
                         </a>
-                        <a href="<?= url('admin/comments/delete/' . $comment->id) ?>" class="btn btn-sm" style="background:#e74c3c;color:#fff;font-size:0.75rem;" 
+                        <a href="<?= url('admin/comments/delete/' . $comment->id) ?>" class="inline-flex items-center gap-1 px-2.5 py-1 bg-red-500 text-white text-xs font-medium rounded-md hover:bg-red-600 transition"
                            onclick="return confirm('<?= $t('confirm_delete') ?>')">
-                            <i class="fas fa-trash"></i>
+                            <i class="fas fa-trash text-[0.6rem]"></i>
                         </a>
                     </div>
                     <?php endif; ?>
                 </div>
                 <?php endforeach; ?>
             <?php else: ?>
-            <p class="text-muted"><?= $t('no_comments') ?></p>
+            <p class="text-stone-400 text-center py-8"><?= $t('no_comments') ?></p>
             <?php endif; ?>
         </div>
     </div>
 </div>
 
-<!-- Quick Stats / Monthly Chart placeholder -->
-<div class="admin-card" style="margin-top:1.5rem;">
-    <div class="admin-card__header">
-        <h3><?= $t('monthly_views') ?></h3>
+<!-- Monthly Views Chart -->
+<div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden mt-6">
+    <div class="px-5 py-4 border-b border-stone-100">
+        <h3 class="font-semibold text-stone-800"><?= $t('monthly_views') ?></h3>
     </div>
-    <div class="admin-card__body">
+    <div class="p-5">
         <?php if (!empty($monthlyViews)): ?>
-        <div style="display:flex;align-items:flex-end;gap:4px;height:200px;padding:1rem 0;">
-            <?php 
+        <div class="flex items-end gap-1 h-52">
+            <?php
             $maxViews = max(array_map(function($mv) { return $mv->visits ?? 0; }, $monthlyViews) ?: [1]);
-            foreach ($monthlyViews as $mv): 
+            foreach ($monthlyViews as $mv):
                 $height = ($mv->visits / max($maxViews, 1)) * 100;
             ?>
-            <div style="flex:1;display:flex;flex-direction:column;align-items:center;">
-                <span class="text-xs text-muted" style="margin-bottom:4px;"><?= number_format($mv->visits) ?></span>
-                <div style="width:100%;background:linear-gradient(to top,var(--gold),#f0d060);border-radius:4px 4px 0 0;height:<?= max($height, 5) ?>%;min-height:4px;transition:height 0.5s ease;"></div>
-                <span class="text-xs text-muted" style="margin-top:4px;"><?= date('M', strtotime($mv->month . '-01')) ?></span>
+            <div class="flex-1 flex flex-col items-center group">
+                <span class="text-[0.6rem] text-stone-400 mb-1 opacity-0 group-hover:opacity-100 transition"><?= number_format($mv->visits) ?></span>
+                <div class="w-full bg-gradient-to-t from-brand-gold to-brand-gold-light rounded-t-md transition-all duration-500 hover:opacity-80"
+                     style="height: <?= max($height, 3) ?>%; min-height: 4px;"></div>
+                <span class="text-[0.6rem] text-stone-400 mt-1.5"><?= date('M', strtotime($mv->month . '-01')) ?></span>
             </div>
             <?php endforeach; ?>
         </div>
         <?php else: ?>
-        <p class="text-muted text-center" style="padding:2rem;"><?= $t('no_data') ?></p>
+        <p class="text-stone-400 text-center py-8"><?= $t('no_data') ?></p>
         <?php endif; ?>
     </div>
 </div>

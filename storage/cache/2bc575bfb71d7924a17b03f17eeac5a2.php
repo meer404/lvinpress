@@ -1,9 +1,9 @@
 <?php return array (
-  'expire' => 1770509452,
+  'expire' => 1770523477,
   'value' => 
   array (
-    'temp' => 10.5,
-    'condition' => 'bolt',
+    'temp' => 10.7,
+    'condition' => 'cloud',
     'city' => 'Erbil',
   ),
 );

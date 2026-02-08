@@ -1,49 +1,50 @@
 <?php
 /**
- * Admin Ads Management
+ * Admin Ads Management - Tailwind CSS Redesign
  */
 $pageTitle = $t('ads') ?? 'Ads Management';
 ob_start();
 ?>
 
-<div class="admin-card">
-    <div class="admin-card__header">
-        <h3><?= $t('all_ads') ?? 'All Ads' ?></h3>
-        <button class="btn btn-gold btn-sm" onclick="document.getElementById('adModal').style.display='flex'">
-            <i class="fas fa-plus"></i> <?= $t('add_new') ?>
+<div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+        <h3 class="font-semibold text-stone-800"><?= $t('all_ads') ?? 'All Ads' ?></h3>
+        <button onclick="document.getElementById('adModal').classList.remove('hidden')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-gold text-white text-sm font-medium rounded-lg hover:bg-brand-gold-dark transition shadow-sm">
+            <i class="fas fa-plus text-xs"></i> <?= $t('add_new') ?>
         </button>
     </div>
-    <div class="admin-card__body" style="overflow-x:auto;">
-        <table class="admin-table">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
             <thead>
-                <tr>
-                    <th><?= $t('title') ?></th>
-                    <th><?= $t('position') ?></th>
-                    <th><?= $t('status') ?></th>
-                    <th><?= $t('actions') ?></th>
+                <tr class="border-b border-stone-100">
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('title') ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('position') ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('status') ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('actions') ?></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-stone-50">
                 <?php if (!empty($ads)): ?>
                     <?php foreach ($ads as $ad): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($ad->title ?? '') ?></td>
-                        <td><span class="badge"><?= ucfirst($ad->position ?? 'sidebar') ?></span></td>
-                        <td>
-                            <span class="badge badge-<?= ($ad->is_active ?? 0) ? 'success' : 'warning' ?>">
-                                <?= ($ad->is_active ?? 0) ? $t('active') : $t('inactive') ?>
-                            </span>
+                    <tr class="hover:bg-stone-50/50 transition group">
+                        <td class="px-5 py-3 font-medium text-stone-700"><?= htmlspecialchars($ad->title ?? '') ?></td>
+                        <td class="px-5 py-3">
+                            <span class="inline-flex px-2 py-0.5 rounded-md text-xs font-medium bg-stone-100 text-stone-600"><?= ucfirst($ad->position ?? 'sidebar') ?></span>
                         </td>
-                        <td>
-                            <div style="display:flex;gap:0.25rem;">
-                                <a href="<?= url('admin/ads/delete/' . $ad->id) ?>" class="btn btn-sm" style="background:#e74c3c;color:#fff;" 
-                                   onclick="return confirm('<?= $t('confirm_delete') ?>')"><i class="fas fa-trash"></i></a>
-                            </div>
+                        <td class="px-5 py-3">
+                            <?php $aColor = ($ad->is_active ?? 0) ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'; ?>
+                            <span class="inline-flex px-2 py-0.5 rounded-md text-xs font-medium <?= $aColor ?>"><?= ($ad->is_active ?? 0) ? $t('active') : $t('inactive') ?></span>
+                        </td>
+                        <td class="px-5 py-3">
+                            <a href="<?= url('admin/ads/delete/' . $ad->id) ?>" class="w-8 h-8 flex items-center justify-center rounded-lg border border-stone-200 text-stone-500 hover:border-red-400 hover:text-red-500 hover:bg-red-50 transition opacity-0 group-hover:opacity-100"
+                               onclick="return confirm('<?= $t('confirm_delete') ?>')">
+                                <i class="fas fa-trash text-xs"></i>
+                            </a>
                         </td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
-                <tr><td colspan="4" class="text-center text-muted" style="padding:2rem;"><?= $t('no_ads') ?? 'No ads found' ?></td></tr>
+                <tr><td colspan="4" class="text-center text-stone-400 py-12"><?= $t('no_ads') ?? 'No ads found' ?></td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -51,37 +52,40 @@ ob_start();
 </div>
 
 <!-- Add Ad Modal -->
-<div id="adModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;">
-    <div style="background:var(--bg-primary);border-radius:var(--radius-lg);padding:1.5rem;max-width:500px;width:90%;">
-        <h3 style="margin-bottom:1rem;"><?= $t('add_ad') ?? 'Add Advertisement' ?></h3>
-        <form method="POST" action="<?= url('admin/ads/store') ?>">
+<div id="adModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-lg w-full">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $t('add_ad') ?? 'Add Advertisement' ?></h3>
+            <button onclick="document.getElementById('adModal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-stone-100 transition">
+                <i class="fas fa-times text-stone-400"></i>
+            </button>
+        </div>
+        <form method="POST" action="<?= url('admin/ads/store') ?>" class="p-5 space-y-4">
             <?= csrf_field() ?>
-            <div class="form-group">
-                <label class="form-label"><?= $t('title') ?></label>
-                <input type="text" name="title" class="form-control" required>
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('title') ?></label>
+                <input type="text" name="title" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('position') ?></label>
-                <select name="position" class="form-control">
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('position') ?></label>
+                <select name="position" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     <option value="header">Header</option>
                     <option value="sidebar">Sidebar</option>
                     <option value="article">In Article</option>
                     <option value="footer">Footer</option>
                 </select>
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('ad_code') ?? 'Ad Code' ?></label>
-                <textarea name="code" class="form-control" rows="4" placeholder="HTML/JavaScript code"></textarea>
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('ad_code') ?? 'Ad Code' ?></label>
+                <textarea name="code" rows="4" placeholder="HTML/JavaScript code" dir="ltr" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold resize-y"></textarea>
             </div>
-            <div class="form-group">
-                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-                    <input type="checkbox" name="is_active" value="1" checked>
-                    <span><?= $t('active') ?></span>
-                </label>
-            </div>
-            <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
-                <button type="button" class="btn btn-outline" onclick="document.getElementById('adModal').style.display='none'"><?= $t('cancel') ?></button>
-                <button type="submit" class="btn btn-gold"><?= $t('save') ?></button>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" name="is_active" value="1" checked class="rounded border-stone-300 text-brand-gold focus:ring-brand-gold/30">
+                <span class="text-sm text-stone-700"><?= $t('active') ?></span>
+            </label>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="document.getElementById('adModal').classList.add('hidden')" class="px-4 py-2 border border-stone-200 text-stone-600 font-medium rounded-xl hover:bg-stone-50 transition text-sm"><?= $t('cancel') ?></button>
+                <button type="submit" class="px-6 py-2 bg-brand-gold text-white font-semibold rounded-xl hover:bg-brand-gold-dark transition shadow-sm text-sm"><?= $t('save') ?></button>
             </div>
         </form>
     </div>

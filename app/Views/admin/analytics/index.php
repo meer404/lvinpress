@@ -1,59 +1,64 @@
 <?php
 /**
- * Admin Analytics Dashboard
+ * Admin Analytics - Tailwind CSS Redesign
  */
 $pageTitle = $t('analytics') ?? 'Analytics';
 ob_start();
 ?>
 
-<div class="admin-stats">
-    <div class="admin-stat-card">
-        <div class="admin-stat-card__icon" style="background:rgba(212,175,55,0.1);color:#d4af37;">
-            <i class="fas fa-newspaper"></i>
-        </div>
-        <div class="admin-stat-card__content">
-            <span class="admin-stat-card__value"><?= number_format($totalArticles ?? 0) ?></span>
-            <span class="admin-stat-card__label"><?= $t('total_articles') ?? 'Total Articles' ?></span>
-        </div>
-    </div>
-    
-    <div class="admin-stat-card">
-        <div class="admin-stat-card__icon" style="background:rgba(46,204,113,0.1);color:#2ecc71;">
-            <i class="fas fa-eye"></i>
-        </div>
-        <div class="admin-stat-card__content">
-            <span class="admin-stat-card__value"><?= number_format($totalViews ?? 0) ?></span>
-            <span class="admin-stat-card__label"><?= $t('total_views') ?? 'Total Views' ?></span>
+<div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-brand-gold/10 flex items-center justify-center">
+                <i class="fas fa-newspaper text-brand-gold"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($totalArticles ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('total_articles') ?? 'Total Articles' ?></div>
+            </div>
         </div>
     </div>
-    
-    <div class="admin-stat-card">
-        <div class="admin-stat-card__icon" style="background:rgba(52,152,219,0.1);color:#3498db;">
-            <i class="fas fa-users"></i>
-        </div>
-        <div class="admin-stat-card__content">
-            <span class="admin-stat-card__value"><?= number_format($totalUsers ?? 0) ?></span>
-            <span class="admin-stat-card__label"><?= $t('total_users') ?? 'Total Users' ?></span>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-emerald-500/10 flex items-center justify-center">
+                <i class="fas fa-eye text-emerald-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($totalViews ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('total_views') ?? 'Total Views' ?></div>
+            </div>
         </div>
     </div>
-    
-    <div class="admin-stat-card">
-        <div class="admin-stat-card__icon" style="background:rgba(155,89,182,0.1);color:#9b59b6;">
-            <i class="fas fa-comments"></i>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-blue-500/10 flex items-center justify-center">
+                <i class="fas fa-users text-blue-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($totalUsers ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('total_users') ?? 'Total Users' ?></div>
+            </div>
         </div>
-        <div class="admin-stat-card__content">
-            <span class="admin-stat-card__value"><?= number_format($totalComments ?? 0) ?></span>
-            <span class="admin-stat-card__label"><?= $t('total_comments') ?? 'Total Comments' ?></span>
+    </div>
+    <div class="bg-white rounded-2xl p-5 border border-stone-100 shadow-sm hover:shadow-md transition-shadow">
+        <div class="flex items-center gap-4">
+            <div class="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
+                <i class="fas fa-comments text-purple-500"></i>
+            </div>
+            <div>
+                <div class="text-2xl font-bold text-stone-800"><?= number_format($totalComments ?? 0) ?></div>
+                <div class="text-xs text-stone-500 font-medium"><?= $t('total_comments') ?? 'Total Comments' ?></div>
+            </div>
         </div>
     </div>
 </div>
 
-<div class="admin-card mt-4">
-    <div class="admin-card__header">
-        <h3><?= $t('analytics_overview') ?? 'Analytics Overview' ?></h3>
+<div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden mt-6">
+    <div class="px-5 py-4 border-b border-stone-100">
+        <h3 class="font-semibold text-stone-800"><?= $t('analytics_overview') ?? 'Analytics Overview' ?></h3>
     </div>
-    <div class="admin-card__body">
-        <p class="text-muted"><?= $t('analytics_info') ?? 'Detailed analytics charts coming soon.' ?></p>
+    <div class="p-5">
+        <p class="text-stone-400 text-center py-8"><?= $t('analytics_info') ?? 'Detailed analytics charts coming soon.' ?></p>
     </div>
 </div>
 

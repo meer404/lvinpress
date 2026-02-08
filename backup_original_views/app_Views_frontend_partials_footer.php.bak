@@ -1,0 +1,107 @@
+    </main>
+
+    <!-- Newsletter Section -->
+    <section class="newsletter">
+        <div class="container">
+            <div style="position:relative;z-index:1;">
+                <p style="font-size:var(--text-xs);text-transform:uppercase;letter-spacing:0.2em;color:var(--brand-gold);margin-bottom:var(--spacing-sm);font-weight:600;"><?= $t('newsletter') ?></p>
+                <h2 class="newsletter__title"><?= $t('newsletter') ?></h2>
+                <p class="newsletter__text"><?= $t('subscribe_text') ?></p>
+                <form class="newsletter__form" id="newsletterForm" onsubmit="return subscribeNewsletter(event)">
+                    <input type="email" name="email" class="newsletter__input" placeholder="<?= $t('enter_email') ?>" required>
+                    <button type="submit" class="btn btn-gold btn-lg"><?= $t('subscribe') ?> <i class="fas fa-arrow-right" style="font-size:0.85em;"></i></button>
+                </form>
+                <p class="newsletter__message text-sm mt-1" id="newsletterMsg" style="display:none;"></p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer__grid">
+                <div>
+                    <div class="footer__brand">
+                        <div class="footer__brand-name">LVINPRESS</div>
+                        <p class="footer__brand-desc"><?= $settings->{'site_description_' . $lang} ?? 'Premium Luxury News Platform' ?></p>
+                    </div>
+                    <div class="footer__social">
+                        <?php if (!empty($settings->social_facebook)): ?>
+                        <a href="<?= $settings->social_facebook ?>" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_twitter)): ?>
+                        <a href="<?= $settings->social_twitter ?>" target="_blank" aria-label="Twitter"><i class="fab fa-x-twitter"></i></a>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_instagram)): ?>
+                        <a href="<?= $settings->social_instagram ?>" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_youtube)): ?>
+                        <a href="<?= $settings->social_youtube ?>" target="_blank" aria-label="YouTube"><i class="fab fa-youtube"></i></a>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_telegram)): ?>
+                        <a href="<?= $settings->social_telegram ?>" target="_blank" aria-label="Telegram"><i class="fab fa-telegram"></i></a>
+                        <?php endif; ?>
+                    </div>
+                </div>
+                
+                <div>
+                    <h4 class="footer__title"><?= $t('quick_links') ?></h4>
+                    <ul class="footer__links">
+                        <li><a href="<?= lang_url() ?>"><i class="fas fa-chevron-right" style="font-size:0.6em;opacity:0.4;margin-right:0.35rem;"></i><?= $t('home') ?></a></li>
+                        <li><a href="<?= lang_url('page/about') ?>"><i class="fas fa-chevron-right" style="font-size:0.6em;opacity:0.4;margin-right:0.35rem;"></i><?= $t('about_us') ?></a></li>
+                        <li><a href="<?= lang_url('page/contact') ?>"><i class="fas fa-chevron-right" style="font-size:0.6em;opacity:0.4;margin-right:0.35rem;"></i><?= $t('contact_us') ?></a></li>
+                        <li><a href="<?= lang_url('page/privacy') ?>"><i class="fas fa-chevron-right" style="font-size:0.6em;opacity:0.4;margin-right:0.35rem;"></i><?= $t('privacy_policy') ?></a></li>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer__title"><?= $t('categories') ?></h4>
+                    <ul class="footer__links">
+                        <?php foreach ($menuCats ?? [] as $fCat): ?>
+                        <li><a href="<?= lang_url('category/' . $fCat->slug_en) ?>"><i class="fas fa-chevron-right" style="font-size:0.6em;opacity:0.4;margin-right:0.35rem;"></i><?= $fCat->{'name_' . $lang} ?? $fCat->name_en ?></a></li>
+                        <?php endforeach; ?>
+                    </ul>
+                </div>
+                
+                <div>
+                    <h4 class="footer__title"><?= $t('follow_us') ?></h4>
+                    <ul class="footer__links">
+                        <?php if (!empty($settings->social_facebook)): ?>
+                        <li><a href="<?= $settings->social_facebook ?>" target="_blank"><i class="fab fa-facebook-f" style="width:16px;opacity:0.6;margin-right:0.35rem;"></i>Facebook</a></li>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_twitter)): ?>
+                        <li><a href="<?= $settings->social_twitter ?>" target="_blank"><i class="fab fa-x-twitter" style="width:16px;opacity:0.6;margin-right:0.35rem;"></i>Twitter / X</a></li>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_instagram)): ?>
+                        <li><a href="<?= $settings->social_instagram ?>" target="_blank"><i class="fab fa-instagram" style="width:16px;opacity:0.6;margin-right:0.35rem;"></i>Instagram</a></li>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_youtube)): ?>
+                        <li><a href="<?= $settings->social_youtube ?>" target="_blank"><i class="fab fa-youtube" style="width:16px;opacity:0.6;margin-right:0.35rem;"></i>YouTube</a></li>
+                        <?php endif; ?>
+                        <?php if (!empty($settings->social_telegram)): ?>
+                        <li><a href="<?= $settings->social_telegram ?>" target="_blank"><i class="fab fa-telegram" style="width:16px;opacity:0.6;margin-right:0.35rem;"></i>Telegram</a></li>
+                        <?php endif; ?>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer__bottom">
+                <span>&copy; <?= date('Y') ?> <?= $settings->{'site_name_' . $lang} ?? 'LVINPress' ?>. <?= $t('all_rights_reserved') ?></span>
+                <span style="display:flex;align-items:center;gap:0.5rem;">
+                    <span style="width:6px;height:6px;background:var(--brand-red);border-radius:50%;display:inline-block;"></span>
+                    Luxury News Platform
+                </span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Back to Top -->
+    <button class="back-to-top" id="backToTop" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+        <i class="fas fa-chevron-up"></i>
+    </button>
+
+    <!-- Scripts -->
+    <script src="<?= asset('js/app.js') ?>"></script>
+    <?= $settings->footer_scripts ?? '' ?>
+</body>
+</html>

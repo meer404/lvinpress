@@ -1,68 +1,65 @@
 <?php
 /**
- * Admin User Create/Edit Form
+ * Admin User Form - Tailwind CSS Redesign
  */
 $isEdit = isset($user) && is_object($user);
 $pageTitle = $isEdit ? $t('edit') . ' ' . ($user->username ?? '') : $t('add_new');
 ob_start();
 ?>
 
-<div style="max-width:700px;">
-    <div class="admin-card">
-        <div class="admin-card__header">
-            <h3><?= $pageTitle ?></h3>
-            <a href="<?= url('admin/users') ?>" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> <?= $t('back') ?? 'Back' ?></a>
+<div class="max-w-2xl">
+    <div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $pageTitle ?></h3>
+            <a href="<?= url('admin/users') ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-stone-200 text-stone-600 text-xs font-medium rounded-lg hover:border-brand-gold hover:text-brand-gold transition">
+                <i class="fas fa-arrow-left text-[0.6rem]"></i> <?= $t('back') ?? 'Back' ?>
+            </a>
         </div>
-        <div class="admin-card__body">
-            <form method="POST" action="<?= $isEdit ? url('admin/users/update/' . $user->id) : url('admin/users/store') ?>">
+        <div class="p-5">
+            <form method="POST" action="<?= $isEdit ? url('admin/users/update/' . $user->id) : url('admin/users/store') ?>" class="space-y-4">
                 <?= csrf_field() ?>
-                
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('username') ?> *</label>
-                        <input type="text" name="username" class="form-control" 
-                               value="<?= htmlspecialchars($user->username ?? '') ?>" 
-                               required pattern="[a-zA-Z0-9_]+" <?= $isEdit ? 'readonly' : '' ?>>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('username') ?> *</label>
+                        <input type="text" name="username" value="<?= htmlspecialchars($user->username ?? '') ?>"
+                               required pattern="[a-zA-Z0-9_]+" <?= $isEdit ? 'readonly' : '' ?>
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold <?= $isEdit ? 'bg-stone-50 text-stone-400' : '' ?>">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('email') ?> *</label>
-                        <input type="email" name="email" class="form-control" 
-                               value="<?= htmlspecialchars($user->email ?? '') ?>" required>
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('email') ?> *</label>
+                        <input type="email" name="email" value="<?= htmlspecialchars($user->email ?? '') ?>" required
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label"><?= $t('password') ?> <?= $isEdit ? '' : '*' ?></label>
-                    <input type="password" name="password" class="form-control" 
-                           minlength="6" <?= $isEdit ? '' : 'required' ?>>
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('password') ?> <?= $isEdit ? '' : '*' ?></label>
+                    <input type="password" name="password" minlength="6" <?= $isEdit ? '' : 'required' ?>
+                           class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     <?php if ($isEdit): ?>
-                    <small class="text-muted">Leave blank to keep current password</small>
+                    <p class="text-xs text-stone-400 mt-1">Leave blank to keep current password</p>
                     <?php endif; ?>
                 </div>
-
-                <!-- Multilingual Names -->
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('full_name') ?> (کوردی)</label>
-                        <input type="text" name="full_name_ku" class="form-control" dir="rtl"
-                               value="<?= htmlspecialchars($user->full_name_ku ?? '') ?>">
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('full_name') ?> (کوردی)</label>
+                        <input type="text" name="full_name_ku" dir="rtl" value="<?= htmlspecialchars($user->full_name_ku ?? '') ?>"
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('full_name') ?> (English)</label>
-                        <input type="text" name="full_name_en" class="form-control" dir="ltr"
-                               value="<?= htmlspecialchars($user->full_name_en ?? '') ?>">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('full_name') ?> (English)</label>
+                        <input type="text" name="full_name_en" dir="ltr" value="<?= htmlspecialchars($user->full_name_en ?? '') ?>"
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('full_name') ?> (العربية)</label>
-                        <input type="text" name="full_name_ar" class="form-control" dir="rtl"
-                               value="<?= htmlspecialchars($user->full_name_ar ?? '') ?>">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('full_name') ?> (العربية)</label>
+                        <input type="text" name="full_name_ar" dir="rtl" value="<?= htmlspecialchars($user->full_name_ar ?? '') ?>"
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
                 </div>
-
-                <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('role') ?></label>
-                        <select name="role" class="form-control">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('role') ?></label>
+                        <select name="role" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                             <option value="subscriber" <?= ($user->role ?? '') === 'subscriber' ? 'selected' : '' ?>>Subscriber</option>
                             <option value="writer" <?= ($user->role ?? '') === 'writer' ? 'selected' : '' ?>>Writer</option>
                             <option value="editor" <?= ($user->role ?? '') === 'editor' ? 'selected' : '' ?>>Editor</option>
@@ -70,9 +67,9 @@ ob_start();
                         </select>
                     </div>
                     <?php if ($isEdit): ?>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('status') ?></label>
-                        <select name="status" class="form-control">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('status') ?></label>
+                        <select name="status" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                             <option value="active" <?= ($user->status ?? '') === 'active' ? 'selected' : '' ?>>Active</option>
                             <option value="suspended" <?= ($user->status ?? '') === 'suspended' ? 'selected' : '' ?>>Suspended</option>
                             <option value="banned" <?= ($user->status ?? '') === 'banned' ? 'selected' : '' ?>>Banned</option>
@@ -80,10 +77,11 @@ ob_start();
                     </div>
                     <?php endif; ?>
                 </div>
-                
-                <div style="display:flex;gap:0.5rem;margin-top:1.5rem;">
-                    <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> <?= $t('save') ?></button>
-                    <a href="<?= url('admin/users') ?>" class="btn btn-outline"><?= $t('cancel') ?? 'Cancel' ?></a>
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="submit" class="px-6 py-2.5 bg-brand-gold text-white font-semibold rounded-xl hover:bg-brand-gold-dark transition shadow-sm flex items-center gap-2">
+                        <i class="fas fa-save text-sm"></i> <?= $t('save') ?>
+                    </button>
+                    <a href="<?= url('admin/users') ?>" class="px-6 py-2.5 border border-stone-200 text-stone-600 font-medium rounded-xl hover:bg-stone-50 transition"><?= $t('cancel') ?? 'Cancel' ?></a>
                 </div>
             </form>
         </div>

@@ -1,6 +1,6 @@
 <?php
 /**
- * Static Page View
+ * Static Page View - Tailwind CSS Redesign
  */
 include VIEW_PATH . '/frontend/partials/header.php';
 
@@ -11,11 +11,10 @@ $pageTitle = $page->$titleField ?: $page->title_en;
 $pageContent = $page->$contentField ?: $page->content_en;
 ?>
 
-<div class="container" style="padding-top:var(--spacing-2xl);padding-bottom:var(--spacing-2xl);">
-    <article class="article-page" style="max-width:800px;margin:0 auto;">
-        <h1 class="article-page__title" style="text-align:center;margin-bottom:var(--spacing-xl);"><?= $pageTitle ?></h1>
-        
-        <div class="article-page__content">
+<div class="max-w-container mx-auto px-4 lg:px-6 py-10 lg:py-14">
+    <article class="max-w-3xl mx-auto">
+        <h1 class="font-display text-3xl lg:text-4xl font-bold text-stone-900 dark:text-white text-center mb-8"><?= $pageTitle ?></h1>
+        <div class="article-body text-stone-700 dark:text-stone-300 text-base lg:text-lg leading-relaxed">
             <?= $pageContent ?>
         </div>
     </article>

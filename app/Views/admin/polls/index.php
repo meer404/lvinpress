@@ -1,44 +1,43 @@
 <?php
 /**
- * Admin Polls Management
+ * Admin Polls - Tailwind CSS Redesign
  */
 $pageTitle = $t('polls') ?? 'Polls';
 ob_start();
 ?>
 
-<div class="admin-card">
-    <div class="admin-card__header">
-        <h3><?= $t('all_polls') ?? 'All Polls' ?></h3>
-        <button class="btn btn-gold btn-sm" onclick="document.getElementById('pollModal').style.display='flex'">
-            <i class="fas fa-plus"></i> <?= $t('add_new') ?>
+<div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+    <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+        <h3 class="font-semibold text-stone-800"><?= $t('all_polls') ?? 'All Polls' ?></h3>
+        <button onclick="document.getElementById('pollModal').classList.remove('hidden')" class="inline-flex items-center gap-1.5 px-4 py-2 bg-brand-gold text-white text-sm font-medium rounded-lg hover:bg-brand-gold-dark transition shadow-sm">
+            <i class="fas fa-plus text-xs"></i> <?= $t('add_new') ?>
         </button>
     </div>
-    <div class="admin-card__body" style="overflow-x:auto;">
-        <table class="admin-table">
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
             <thead>
-                <tr>
-                    <th><?= $t('question') ?></th>
-                    <th><?= $t('votes') ?? 'Total Votes' ?></th>
-                    <th><?= $t('status') ?></th>
-                    <th><?= $t('expires') ?? 'Expires' ?></th>
+                <tr class="border-b border-stone-100">
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('question') ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('votes') ?? 'Total Votes' ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('status') ?></th>
+                    <th class="px-5 py-3 text-start text-xs font-semibold text-stone-500 uppercase tracking-wider"><?= $t('expires') ?? 'Expires' ?></th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody class="divide-y divide-stone-50">
                 <?php if (!empty($polls)): ?>
                     <?php foreach ($polls as $poll): ?>
-                    <tr>
-                        <td><?= htmlspecialchars($poll->{'question_' . $lang} ?? $poll->question_ku ?? '') ?></td>
-                        <td><?= number_format($poll->total_votes ?? 0) ?></td>
-                        <td>
-                            <span class="badge badge-<?= ($poll->is_active ?? 0) ? 'success' : 'warning' ?>">
-                                <?= ($poll->is_active ?? 0) ? $t('active') : $t('inactive') ?>
-                            </span>
+                    <tr class="hover:bg-stone-50/50 transition">
+                        <td class="px-5 py-3 font-medium text-stone-700"><?= htmlspecialchars($poll->{'question_' . $lang} ?? $poll->question_ku ?? '') ?></td>
+                        <td class="px-5 py-3 text-stone-500"><?= number_format($poll->total_votes ?? 0) ?></td>
+                        <td class="px-5 py-3">
+                            <?php $pColor = ($poll->is_active ?? 0) ? 'bg-emerald-50 text-emerald-700' : 'bg-amber-50 text-amber-700'; ?>
+                            <span class="inline-flex px-2 py-0.5 rounded-md text-xs font-medium <?= $pColor ?>"><?= ($poll->is_active ?? 0) ? $t('active') : $t('inactive') ?></span>
                         </td>
-                        <td class="text-sm text-muted"><?= $poll->expires_at ? date('Y-m-d', strtotime($poll->expires_at)) : '-' ?></td>
+                        <td class="px-5 py-3 text-stone-400 text-xs"><?= $poll->expires_at ? date('Y-m-d', strtotime($poll->expires_at)) : '-' ?></td>
                     </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
-                <tr><td colspan="4" class="text-center text-muted" style="padding:2rem;"><?= $t('no_polls') ?? 'No polls found' ?></td></tr>
+                <tr><td colspan="4" class="text-center text-stone-400 py-12"><?= $t('no_polls') ?? 'No polls found' ?></td></tr>
                 <?php endif; ?>
             </tbody>
         </table>
@@ -46,40 +45,43 @@ ob_start();
 </div>
 
 <!-- Add Poll Modal -->
-<div id="pollModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.5);align-items:center;justify-content:center;z-index:1000;">
-    <div style="background:var(--bg-primary);border-radius:var(--radius-lg);padding:1.5rem;max-width:600px;width:90%;max-height:90vh;overflow-y:auto;">
-        <h3 style="margin-bottom:1rem;"><?= $t('add_poll') ?? 'Add Poll' ?></h3>
-        <form method="POST" action="<?= url('admin/polls/store') ?>">
+<div id="pollModal" class="hidden fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-2xl shadow-2xl max-w-xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $t('add_poll') ?? 'Add Poll' ?></h3>
+            <button onclick="document.getElementById('pollModal').classList.add('hidden')" class="w-8 h-8 flex items-center justify-center rounded-lg hover:bg-stone-100 transition">
+                <i class="fas fa-times text-stone-400"></i>
+            </button>
+        </div>
+        <form method="POST" action="<?= url('admin/polls/store') ?>" class="p-5 space-y-4">
             <?= csrf_field() ?>
-            <div class="form-group">
-                <label class="form-label"><?= $t('question') ?> (کوردی)</label>
-                <input type="text" name="question_ku" class="form-control" dir="rtl" required>
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('question') ?> (کوردی)</label>
+                <input type="text" name="question_ku" dir="rtl" required class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('question') ?> (English)</label>
-                <input type="text" name="question_en" class="form-control" dir="ltr">
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('question') ?> (English)</label>
+                <input type="text" name="question_en" dir="ltr" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('question') ?> (العربية)</label>
-                <input type="text" name="question_ar" class="form-control" dir="rtl">
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('question') ?> (العربية)</label>
+                <input type="text" name="question_ar" dir="rtl" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('options') ?? 'Options' ?> (<?= $t('one_per_line') ?? 'One per line' ?>)</label>
-                <textarea name="options" class="form-control" rows="5" required placeholder="Option 1&#10;Option 2&#10;Option 3"></textarea>
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('options') ?? 'Options' ?> (<?= $t('one_per_line') ?? 'One per line' ?>)</label>
+                <textarea name="options" rows="5" required placeholder="Option 1&#10;Option 2&#10;Option 3" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold resize-y"></textarea>
             </div>
-            <div class="form-group">
-                <label class="form-label"><?= $t('expires_at') ?? 'Expires At' ?></label>
-                <input type="datetime-local" name="expires_at" class="form-control">
+            <div>
+                <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('expires_at') ?? 'Expires At' ?></label>
+                <input type="datetime-local" name="expires_at" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
             </div>
-            <div class="form-group">
-                <label style="display:flex;align-items:center;gap:0.5rem;cursor:pointer;">
-                    <input type="checkbox" name="is_active" value="1" checked>
-                    <span><?= $t('active') ?></span>
-                </label>
-            </div>
-            <div style="display:flex;gap:0.5rem;justify-content:flex-end;">
-                <button type="button" class="btn btn-outline" onclick="document.getElementById('pollModal').style.display='none'"><?= $t('cancel') ?></button>
-                <button type="submit" class="btn btn-gold"><?= $t('save') ?></button>
+            <label class="flex items-center gap-2.5 cursor-pointer">
+                <input type="checkbox" name="is_active" value="1" checked class="rounded border-stone-300 text-brand-gold focus:ring-brand-gold/30">
+                <span class="text-sm text-stone-700"><?= $t('active') ?></span>
+            </label>
+            <div class="flex items-center justify-end gap-3 pt-2">
+                <button type="button" onclick="document.getElementById('pollModal').classList.add('hidden')" class="px-4 py-2 border border-stone-200 text-stone-600 font-medium rounded-xl hover:bg-stone-50 transition text-sm"><?= $t('cancel') ?></button>
+                <button type="submit" class="px-6 py-2 bg-brand-gold text-white font-semibold rounded-xl hover:bg-brand-gold-dark transition shadow-sm text-sm"><?= $t('save') ?></button>
             </div>
         </form>
     </div>

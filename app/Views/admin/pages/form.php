@@ -1,74 +1,71 @@
 <?php
 /**
- * Admin Page Create/Edit Form
+ * Admin Page Form - Tailwind CSS Redesign
  */
 $isEdit = isset($page) && is_object($page);
 $pageTitle = $isEdit ? ($t('edit') . ' ' . ($page->{'title_' . $lang} ?? '')) : $t('add_new');
 ob_start();
 ?>
 
-<div style="max-width:900px;">
-    <div class="admin-card">
-        <div class="admin-card__header">
-            <h3><?= $pageTitle ?></h3>
-            <a href="<?= url('admin/pages') ?>" class="btn btn-outline btn-sm"><i class="fas fa-arrow-left"></i> <?= $t('back') ?? 'Back' ?></a>
+<div class="max-w-4xl">
+    <div class="bg-white rounded-2xl border border-stone-100 shadow-sm overflow-hidden">
+        <div class="flex items-center justify-between px-5 py-4 border-b border-stone-100">
+            <h3 class="font-semibold text-stone-800"><?= $pageTitle ?></h3>
+            <a href="<?= url('admin/pages') ?>" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-stone-200 text-stone-600 text-xs font-medium rounded-lg hover:border-brand-gold hover:text-brand-gold transition">
+                <i class="fas fa-arrow-left text-[0.6rem]"></i> <?= $t('back') ?? 'Back' ?>
+            </a>
         </div>
-        <div class="admin-card__body">
-            <form method="POST" action="<?= $isEdit ? url('admin/pages/update/' . $page->id) : url('admin/pages/store') ?>">
+        <div class="p-5">
+            <form method="POST" action="<?= $isEdit ? url('admin/pages/update/' . $page->id) : url('admin/pages/store') ?>" class="space-y-4">
                 <?= csrf_field() ?>
-                
-                <div class="form-group">
-                    <label class="form-label"><?= $t('slug') ?> *</label>
-                    <input type="text" name="slug" class="form-control" 
-                           value="<?= htmlspecialchars($page->slug ?? '') ?>" 
-                           required pattern="[a-z0-9\-]+" placeholder="about-us">
-                    <small class="text-muted">URL-friendly identifier (lowercase letters, numbers, hyphens only)</small>
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('slug') ?> *</label>
+                    <input type="text" name="slug" value="<?= htmlspecialchars($page->slug ?? '') ?>"
+                           required pattern="[a-z0-9\-]+" placeholder="about-us" dir="ltr"
+                           class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm font-mono focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
+                    <p class="text-xs text-stone-400 mt-1">URL-friendly identifier (lowercase letters, numbers, hyphens only)</p>
                 </div>
-
-                <!-- Multilingual Titles -->
-                <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:1rem;">
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('title') ?> (کوردی) *</label>
-                        <input type="text" name="title_ku" class="form-control" dir="rtl"
-                               value="<?= htmlspecialchars($page->title_ku ?? '') ?>" required>
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('title') ?> (کوردی) *</label>
+                        <input type="text" name="title_ku" dir="rtl" value="<?= htmlspecialchars($page->title_ku ?? '') ?>" required
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('title') ?> (English)</label>
-                        <input type="text" name="title_en" class="form-control" dir="ltr"
-                               value="<?= htmlspecialchars($page->title_en ?? '') ?>">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('title') ?> (English)</label>
+                        <input type="text" name="title_en" dir="ltr" value="<?= htmlspecialchars($page->title_en ?? '') ?>"
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
-                    <div class="form-group">
-                        <label class="form-label"><?= $t('title') ?> (العربية)</label>
-                        <input type="text" name="title_ar" class="form-control" dir="rtl"
-                               value="<?= htmlspecialchars($page->title_ar ?? '') ?>">
+                    <div>
+                        <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('title') ?> (العربية)</label>
+                        <input type="text" name="title_ar" dir="rtl" value="<?= htmlspecialchars($page->title_ar ?? '') ?>"
+                               class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                     </div>
                 </div>
-
-                <!-- Multilingual Content -->
-                <div class="form-group">
-                    <label class="form-label"><?= $t('content') ?> (کوردی)</label>
-                    <textarea name="content_ku" class="form-control" rows="10" dir="rtl"><?= htmlspecialchars($page->content_ku ?? '') ?></textarea>
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('content') ?> (کوردی)</label>
+                    <textarea name="content_ku" rows="10" dir="rtl" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold resize-y"><?= htmlspecialchars($page->content_ku ?? '') ?></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label"><?= $t('content') ?> (English)</label>
-                    <textarea name="content_en" class="form-control" rows="10" dir="ltr"><?= htmlspecialchars($page->content_en ?? '') ?></textarea>
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('content') ?> (English)</label>
+                    <textarea name="content_en" rows="10" dir="ltr" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold resize-y"><?= htmlspecialchars($page->content_en ?? '') ?></textarea>
                 </div>
-                <div class="form-group">
-                    <label class="form-label"><?= $t('content') ?> (العربية)</label>
-                    <textarea name="content_ar" class="form-control" rows="10" dir="rtl"><?= htmlspecialchars($page->content_ar ?? '') ?></textarea>
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('content') ?> (العربية)</label>
+                    <textarea name="content_ar" rows="10" dir="rtl" class="w-full px-4 py-2.5 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold resize-y"><?= htmlspecialchars($page->content_ar ?? '') ?></textarea>
                 </div>
-
-                <div class="form-group">
-                    <label class="form-label"><?= $t('status') ?></label>
-                    <select name="status" class="form-control">
+                <div>
+                    <label class="block text-sm font-medium text-stone-600 mb-1.5"><?= $t('status') ?></label>
+                    <select name="status" class="w-full px-3 py-2 rounded-xl border border-stone-200 text-sm focus:outline-none focus:ring-2 focus:ring-brand-gold/30 focus:border-brand-gold">
                         <option value="draft" <?= ($page->status ?? 'draft') === 'draft' ? 'selected' : '' ?>><?= $t('draft') ?></option>
                         <option value="published" <?= ($page->status ?? '') === 'published' ? 'selected' : '' ?>><?= $t('published') ?></option>
                     </select>
                 </div>
-                
-                <div style="display:flex;gap:0.5rem;margin-top:1.5rem;">
-                    <button type="submit" class="btn btn-gold"><i class="fas fa-save"></i> <?= $t('save') ?></button>
-                    <a href="<?= url('admin/pages') ?>" class="btn btn-outline"><?= $t('cancel') ?? 'Cancel' ?></a>
+                <div class="flex items-center gap-3 pt-2">
+                    <button type="submit" class="px-6 py-2.5 bg-brand-gold text-white font-semibold rounded-xl hover:bg-brand-gold-dark transition shadow-sm flex items-center gap-2">
+                        <i class="fas fa-save text-sm"></i> <?= $t('save') ?>
+                    </button>
+                    <a href="<?= url('admin/pages') ?>" class="px-6 py-2.5 border border-stone-200 text-stone-600 font-medium rounded-xl hover:bg-stone-50 transition"><?= $t('cancel') ?? 'Cancel' ?></a>
                 </div>
             </form>
         </div>
